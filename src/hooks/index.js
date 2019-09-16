@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import moment from "moment";
 import { firebase } from "../firebase";
-import { moment } from "moment";
 import { collatedTasksExist } from "../helpers";
 
 export const useTasks = selectedProject => {
@@ -36,23 +36,19 @@ export const useTasks = selectedProject => {
         selectedProject === "NEXT_7"
           ? newTasks.filter(
               task =>
-                moment(task.data, "DD-MM-YYYY").diff(moment(), "days") <= 7 &&
+                moment(task.date, "DD-MM-YYYY").diff(moment(), "days") <= 7 &&
                 task.archived !== true
             )
           : newTasks.filter(task => task.archived !== true)
       );
-
-      setArchivedTasks(newTasks.filter(t => t.archived !== false));
+      setArchivedTasks(newTasks.filter(task => task.archived !== false));
     });
 
     return () => unsubscribe();
-  }, [selectedProject]); // only make changes when selectedProject changes
+  }, [selectedProject]);
 
   return { tasks, archivedTasks };
 };
-
-// const selecetedProject = 1;
-// const { tasks, archivedTasks } = useTasks(selectedProject);
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -70,7 +66,6 @@ export const useProjects = () => {
           docId: project.id
         }));
 
-        // You need to do a check before setting all projets otherwise you'll keep updating projects and cause an infinite loop since the useEffect as a dependency on projects
         if (JSON.stringify(allProjects) !== JSON.stringify(projects)) {
           setProjects(allProjects);
         }
