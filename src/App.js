@@ -5,6 +5,6 @@ import { Content } from "./component/layouts/Content";
 export const App = () => (
   <div className="App">
     <Header />
-    <Content />>
+    <Content />
   </div>
 );
