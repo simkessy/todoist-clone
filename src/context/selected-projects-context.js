@@ -1,20 +1,21 @@
 import React, { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 
-// Create context
 export const SelectedProjectContext = createContext();
-
 export const SelectedProjectProvider = ({ children }) => {
-  const { selectedProject, setSeletedProject } = useState("INBOX");
+  const [selectedProject, setSelectedProject] = useState("INBOX");
 
   return (
-    // Add hook values (state and state modifier) to context
     <SelectedProjectContext.Provider
-      value={{ selectedProject, setSeletedProject }}
+      value={{ selectedProject, setSelectedProject }}
     >
       {children}
     </SelectedProjectContext.Provider>
   );
 };
 
-export const useSelectedProjectsValue = () =>
-  useContext(SelectedProjectContext);
+export const useSelectedProjectValue = () => useContext(SelectedProjectContext);
+
+SelectedProjectProvider.propTypes = {
+  children: PropTypes.node.isRequired
+};
